@@ -1,9 +1,4 @@
 # Buffr
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/buffr`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,17 +17,26 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+1. Inherit from the \*Effect classes
+2. Add `include BuffrMixin` to your object of choice
+3. Now you can instantiate your effects and apply them using `YourObject.apply_to(effect)`
+4. You can also cleanse effects from the object using `YourObject.dispel(dispel_group)`
+
+### Extra
+You can override the `max_duration` method/property of your effect to change it's duration
+You can override the `on_*` callbacks of your effect to change it's behaviour.
+
+Dispel Groups (`@@dispel_groups`) - determine which effects will be displled by a particular dispel.
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+There are no dependencies. To run the tests run `ruby test/test_buffr.rb`.
 
 To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/buffr.
+Bug reports and pull requests are welcome on GitHub at https://github.com/manonox/buffr.
 
 ## License
 
