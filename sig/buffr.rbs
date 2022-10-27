@@ -1,0 +1,52 @@
+module Buffr
+  VERSION: String
+  class Error < StandardError;
+
+  class BaseEffect
+    attr_accessor object: untyped
+    attr_accessor duration: Float
+
+    def initialize: () -> void
+
+    def max_duration: () -> float
+    def dispel_groups: () -> Array[String]
+
+    def update: (deltatime: Float) -> void
+    def timeout: () -> void
+    def dispel: (dispel_group: String) -> void
+    def remove: () -> void
+
+    def apply_to: (object: untyped, old_effect: BaseEffect) -> void
+
+    def percent_left: () -> Float
+
+    # Event handlers
+    def on_apply: () -> void
+    def on_update: (deltatime: Float) -> void
+    def on_dispel: (dispel_group: String) -> void
+    def on_timeout: () -> void
+
+    # When the effects of the effect should be reversed
+    def on_clear: () -> void
+
+    # When effect needs to be removed from the object
+    def on_remove: () -> void
+  end
+
+  class MultiEffect < GenericEffect
+    attr_accessor count: Integer
+  end
+
+  class StackingEffect < GenericEffect
+    attr_accessor count: Integer
+  end
+
+end
+
+module BuffrMixin
+  def update_effects: (deltatime: Float) -> void
+  def apply_effect: (effect: BaseEffect) -> void
+  def apply_dispel: (dispel_group: String) -> void
+  def validate_effects: () -> void
+  def effects: () -> void
+end
