@@ -13,7 +13,7 @@ module BuffrMixin
 
   def apply_effect(effect)
     self.validate_effects()
-    old_effect = @effects[effect.class]
+    old_effect = @effects[effect.class.name.to_sym]
     effect.apply_to(self, old_effect)
   end
 
@@ -41,7 +41,6 @@ module Buffr
 
   # Overrides the previous effect
   class BaseEffect
-    @@dispel_groups = []
 
     attr_accessor :object
     attr_accessor :duration
@@ -51,11 +50,11 @@ module Buffr
     end
 
     def max_duration
-      return 10.0
+      10.0
     end
 
     def dispel_groups
-      @@dispel_groups
+      []
     end
 
     def update(deltatime)
@@ -80,13 +79,13 @@ module Buffr
     end
 
     def remove()
-      @object.effects.delete(self.class)
+      @object.effects.delete(self.class.name.to_sym)
       self.on_remove()
     end
 
     def apply_to(object, old_effect)
       @object = object
-      @object.effects[self.class] = self
+      @object.effects[self.class.name.to_sym] = self
       self.on_apply()
     end
 
@@ -115,7 +114,7 @@ module Buffr
   class GenericEffect < BaseEffect
     def apply_to(object, old_effect)
       @object = object
-      @object.effects[self.class] = self
+      @object.effects[self.class.name.to_sym] = self
 
       old_duration = old_effect == nil ? 0.0 : old_effect.duration
       @duration = [@duration, old_duration].max
@@ -128,7 +127,7 @@ module Buffr
   class ExtendingEffect < BaseEffect
     def apply_to(object, old_effect)
       @object = object
-      @object.effects[self.class] = self
+      @object.effects[self.class.name.to_sym] = self
 
       old_duration = old_effect == nil ? 0.0 : old_effect.duration
       @duration = @duration + old_duration
@@ -149,7 +148,7 @@ module Buffr
       end
 
       @object = object
-      @object.effects[self.class] = self
+      @object.effects[self.class.name.to_sym] = self
 
       @duration = old_effect == nil ? self.max_duration : old_effect.duration
       self.on_apply()
@@ -194,7 +193,7 @@ module Buffr
       end
 
       @object = object
-      @object.effects[self.class] = self
+      @object.effects[self.class.name.to_sym] = self
 
       old_duration = old_effect == nil ? 0.0 : old_effect.duration
       @duration = [@duration, old_duration].max
